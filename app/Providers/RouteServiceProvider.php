@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::prefix(self::prefix)
-                //->middleware('auth:api')
+                ->middleware('auth:api')
                 ->namespace($this->namespace)
                 ->group(function () {
                     $this->getRoutes(base_path('routes/private-apis/'));
