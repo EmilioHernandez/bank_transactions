@@ -37,7 +37,7 @@ class AuthController extends Controller
      * Generate access token or error if credentials are incorrect.
      *
      * @param AuthRequest $request
-     * @return array|JsonResponse|mixed
+     * @return array|mixed
      */
     public function login(AuthRequest $request)
     {
@@ -61,16 +61,14 @@ class AuthController extends Controller
      *
      * @param $username
      * @param $password
-     * @return PromiseInterface|Response|JsonResponse
+     * @return PromiseInterface|Response|array
      */
     public function getToken($username, $password)
     {
         $passportClient = $this->clients->find(self::GRANT_CLIENT);
 
-        if (!isset($passportClient->id)) {
-            return response()->json([
-                'message' => Messages::PASSPORT_CLIENT_NOT_EXIST,
-            ]);
+        if (! isset($passportClient->id)) {
+            return ['message' => Messages::PASSPORT_CLIENT_NOT_EXIST,];
         }
 
         return Http::asForm()->post(url('/oauth/token'), [

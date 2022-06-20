@@ -7,58 +7,213 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Bank Transactions
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyecto de prueba para realizar transacciones bancarias usando event sourcing.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Clonar el repo
+- Copiar `.env.example` a `.env`
+- Configurar las variables de entorno `DB_` en `.env` a su gusto
+- Crear una base de datos con el nombre especificado en `DB_DATABASE`
+- `composer install`
+- `php artisan passport:install`
+- Migrar e insertar datos de prueba en la base de datos con `php artisan migrate:fresh --seed`
+- Ahora puedes iniciar sesión con el usuario "emilio25informatic@gmail.com", password "secret"
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Servicios disponibles.
 
-## Learning Laravel
+#### POST [EndPoint para el obtener el token del usuario]
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+##### Resource URL
+http://bank_transactions.test/v1/login
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+##### Headers
+| Key    | Value            | 
+| ------ | ---------------- |
+| Accept | application/json |
 
-## Laravel Sponsors
+##### Body
+| Nombre   | Tipo   | Descripción            | Requerido
+| -------- | ------ | ---------------------- | --------- |
+| username | string | nombre del usuario     |     si    |
+| password | string | contraseña del usuario |     si    |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+##### Status de solicitud manejados
+| Status    | Código  
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
 
-### Premium Partners
+##### Repuesta esperada
+```json
+{
+    "token_type": "Bearer",
+    "expires_in": 31536000,
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiOWJhNmYyODFkNWMxYTlmNzNiNDg2MDZlNmFhNWZkNGVmOTE1ZjRhMGFmNzQzNWFlZTQ3OTExY2U4MjQ4YTc2MDg4NjEyYjI2ZWIwNGRjOGUiLCJpYXQiOjE2NTU3NDkxMjguMTA0NTE2LCJuYmYiOjE2NTU3NDkxMjguMTA0NTE4LCJleHAiOjE2ODcyODUxMjguMDg0OCwic3ViIjoiNSIsInNjb3BlcyI6W119.MRM71KJvU614iwjx7P-EfyFKGn0n1M-R44o8S1lNAjai910K4F9-O5pzmpZL_I7PxG1hquc4nveBY_1JMZ6F_uRX3-pmQbb79SnW79sohS9W2FSOi-wq5BmdBm2F_l-HA6wQdzaN2nNdlGfYzkDVemCJGVEG-Ecd7JDw7J9RTpsTs55GkiaMWUtCYAHM_Dgbcnx0yOfnNw8OZqFd1UHYxxpylQcfXss_EVYA2sQMYsUm74sJQrH-IU1Qz5Kju0RYgwBt6CnrujAofKE1Ny4ZJDUMTXjNo6nbQYm6hng7UX51sowFulzIsPrqm4nJDKF5bLII838nwLNP7cnNv09Bjkw8sHrEFCewquknpwP_Q1CDw6h-H4LD4bADp4f-wy2SADbBw7DUfriDk2PwOYUyKdmqaL9hcWXwmMEQXHMJ6vLZ6zO6hpOe_x9qsiveBZdaaPPlsavU-NqLqWc7VffR70PZliJo2VCIG4S6KA4bjV6NENDTd-ApK16pG4phGZZv92fWXPGHGBlxx22DVVwZCxIAbyj1Bf5znEsDxLZshSYKnS9lDnp0fjsYO9wSuyk8aL06lhVo36m4g0_w4JvqKHuQgmA8LQ8gfq7VojMzAIg6CO8n9wOJpiTKsceasqW7L2uxSwlKN399Z0iWCDQ1f1ve1uJLvHJG_583ZyDgsFM",
+    "refresh_token": "def50200ec09c55a553720d14c67882f40aee57d3749fefee9ee6729f92b87b96ef89c7d1d7627cf24125e2ca4aaf5fad83c8300835e1e059b1156705595ad98c4e05dd9ad74f165a22e2b8098677a8da5295fa859b0efdc34456916c6bd4bef44f34dd9b98cf961f0ff31311e7b5a2b580477261456438f0193ee7efa568b754d4ce272d986b9f80c54ff6efc5bf48a503a23d8c783947942809723cb1febc6d6ec6217a0d218486ee14ccdbd300914bed21cc1cc52f363cb25b117c75c7f22e4e3bd97f5fc8ad18101aba90604bf87b4adb26404d27e217c26817be52c0984bdd913ae38611515a5cda899f458f82260e148f3cd2f3e694e377fa50f880df4305b0011662411458ed2f3649e4f88bfe28406bd0166ef4da594e656f15d926c8540d800e1463ba27005352ffe489287b2222ea29508a03f32aea9a599749541b98737de665ab0f6db2130b2f46f688471e0bcb7da7c0a27a60a8ba79507851d89"
+}
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+##### En el caso de no enviar alguno de los parámetro
+``` json
+{
+    "message": "El campo username es requerido (and 1 more error)",
+    "errors": {
+        "username": [
+            "El campo username es requerido"
+        ],
+        "password": [
+            "El campo password es requerido"
+        ]
+    }
+}
+```
 
-## Contributing
+#### GET [EndPoint para mostrar la lista de cuentas del usuario autenticado]
+##### Resource URL
+http://bank_transactions.test/v1/accounts
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##### Headers
+| Key    | Value
+| ------------- | ------------------- |
+| Accept        | application/json    |
+| Authorization | Bearer access_token |
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+##### Status de solicitud manejados
+| Status    | Código
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
+|  401  | Unauthorized         | 
 
-## Security Vulnerabilities
+##### Repuesta esperada
+```json
+[
+    {
+        "id": 2,
+        "uuid": "6236cf04-4185-4901-825d-102866985411",
+        "name": "My 9 account",
+        "user_id": 5,
+        "balance": 2000,
+        "created_at": "2022-06-20T18:36:46.000000Z",
+        "updated_at": "2022-06-20T18:49:19.000000Z"
+    }
+]
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### POST [EndPoint para crear una cuenta]
+##### Resource URL
+http://bank_transactions.test/v1/accounts
 
-## License
+##### Headers
+| Key    | Value            
+| ------------- | ------------------- |
+| Accept        | application/json    |
+| Authorization | Bearer access_token |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##### Body
+| Nombre   | Tipo   | Descripción            | Requerido
+| -------- | ------ | ---------------------- | --------- |
+| name     | string | nombre de la cuenta    |     si    |
+
+##### Status de solicitud manejados
+| Status    | Código
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
+|  401  | Unauthorized         |
+
+##### Repuesta esperada
+```json
+{
+    "response": "success"
+}
+```
+#### PUT [EndPoint para actualizar el monto de una cuenta]
+##### Resource URL
+http://bank_transactions.test/v1/accounts/{account_uuid}
+
+##### Headers
+| Key    | Value
+| ------------- | ------------------- |
+| Accept        | application/json    |
+| Authorization | Bearer access_token |
+
+##### Body
+| Nombre   | Tipo   | Descripción            | Requerido
+| -------- | ------ | ---------------------- | -------------------------------------------------------------- |
+| name     | string | nombre de la cuenta    |     si                                                         |
+| addMoney | string | Si se envia este parámetro se hace un depósito en caso contrario se realiza un retiro   |     no    |
+
+##### Status de solicitud manejados
+| Status    | Código
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
+|  401  | Unauthorized         |
+
+##### Repuesta esperada
+```json
+{
+    "response": "success"
+}
+```
+#### DELETE [EndPoint para eliminar una cuenta]
+##### Resource URL
+http://bank_transactions.test/v1/accounts/{account_uuid}
+
+##### Headers
+| Key    | Value
+| ------------- | ------------------- |
+| Accept        | application/json    |
+| Authorization | Bearer access_token |
+
+##### Status de solicitud manejados
+| Status    | Código
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
+|  401  | Unauthorized         | 
+
+##### Repuesta esperada
+```json
+{
+    "response": "success"
+}
+```
+#### GET [EndPoint Cuenta las transacciones realizadas por un usuario]
+##### Resource URL
+http://bank_transactions.test/v1/transactions
+
+##### Headers
+| Key    | Value
+| ------------- | ------------------- |
+| Accept        | application/json    |
+| Authorization | Bearer access_token |
+
+##### Status de solicitud manejados
+| Status    | Código
+| ----- | ------------------   | 
+|  200  | Respuesta exitosa    |
+|  401  | Unauthorized         | 
+
+##### Repuesta esperada
+```json
+[
+    {
+        "id": 2,
+        "uuid": "6236cf04-4185-4901-825d-102866985411",
+        "user_id": 5,
+        "count": 2,
+        "created_at": "2022-06-20T18:36:46.000000Z",
+        "updated_at": "2022-06-20T18:49:19.000000Z",
+        "user": {
+            "id": 5,
+            "name": "Emilio Hernández",
+            "email": "emilio25informatic@gmail.com",
+            "email_verified_at": "2022-06-20T18:16:13.000000Z",
+            "created_at": "2022-06-20T18:16:13.000000Z",
+            "updated_at": "2022-06-20T18:16:13.000000Z"
+        }
+    }
+]
+```
+## Ejecutar pruebas
+- `php artisan test
+  `
