@@ -51,4 +51,20 @@ class AccountsController extends Controller
 
         return response()->json(['response' => 'success']);
     }
+
+
+    /**
+     * Delete an account in the database.
+     *
+     * @param string $uuid
+     * @return JsonResponse
+     */
+    public function destroy(string $uuid)
+    {
+        AccountAggregateRoot::retrieve($uuid)
+            ->deleteAccount()
+            ->persist();
+
+        return response()->json(['response' => 'success']);
+    }
 }
