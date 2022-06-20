@@ -41,8 +41,8 @@ class AuthController extends Controller
      */
     public function login(AuthRequest $request)
     {
-        $username = $request->get('username');
-        $password = $request->get('password');
+        $username = $request->username;
+        $password = $request->password;
 
         $tokenResponse = $this->getToken($username, $password);
 
