@@ -39,7 +39,7 @@ class AccountsController extends Controller
      * @param UpdateAccountRequest $request
      * @return JsonResponse
      */
-    public function update(string $uuid, UpdateAccountRequest $request)
+    public function update(string $uuid, UpdateAccountRequest $request): JsonResponse
     {
         $aggregateRoot = AccountAggregateRoot::retrieve($uuid);
 
@@ -59,7 +59,7 @@ class AccountsController extends Controller
      * @param string $uuid
      * @return JsonResponse
      */
-    public function destroy(string $uuid)
+    public function destroy(string $uuid): JsonResponse
     {
         AccountAggregateRoot::retrieve($uuid)
             ->deleteAccount()
