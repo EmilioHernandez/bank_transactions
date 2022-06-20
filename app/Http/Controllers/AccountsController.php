@@ -29,7 +29,7 @@ class AccountsController extends Controller
             ->createAccount($accountName, $authUser->id)
             ->persist();
 
-        return response()->json(['response' => 'success']);
+        return response()->json(defaultResponse());
     }
 
     /**
@@ -49,7 +49,7 @@ class AccountsController extends Controller
 
         $aggregateRoot->persist();
 
-        return response()->json(['response' => 'success']);
+        return response()->json(defaultResponse());
     }
 
 
@@ -65,6 +65,6 @@ class AccountsController extends Controller
             ->deleteAccount()
             ->persist();
 
-        return response()->json(['response' => 'success']);
+        return response()->json(defaultResponse());
     }
 }
