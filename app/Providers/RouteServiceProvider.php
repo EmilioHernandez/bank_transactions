@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
+/**
+ *
+ */
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -20,6 +23,11 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
+     * Resource prefix.
+     */
+    public const prefix = 'v1';
+
+    /**
      * Define your route model bindings, pattern filters, and other route configuration.
      *
      * @return void
@@ -29,9 +37,19 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+            Route::prefix(self::prefix)
+                //->middleware('auth:api')
+                ->namespace($this->namespace)
+                ->group(function () {
+                    $this->getRoutes(base_path('routes/private-apis/'));
+                });
+
+            Route::prefix(self::prefix)
+                ->middleware(['api',])
+                ->namespace($this->namespace)
+                ->group(function () {
+                    $this->getRoutes(base_path('routes/public-apis/'));
+                });
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
@@ -48,5 +66,27 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+
+    /**
+     * @param $dir
+     * @return void
+     */
+    public function getRoutes($dir): void
+    {
+        if ($dh = opendir($dir)) {
+            while (($file = readdir($dh)) !== false) {
+                if (!is_dir($dir . $file) && $file != "." && $file != "..") {
+                    require $dir . $file;
+                } else {
+                    if ($file != "." && $file != "..") {
+                        $this->getRoutes($dir . $file . '/');
+                    }
+                }
+            }
+
+            closedir($dh);
+        }
     }
 }
