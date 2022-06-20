@@ -3,5 +3,5 @@
 use App\Http\Controllers\TransactionsController;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('transactions', TransactionsController::class);
+Route::get('transactions', [TransactionsController::class, 'index']);
 
