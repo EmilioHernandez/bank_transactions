@@ -5,14 +5,26 @@ namespace App\Http\Controllers;
 use App\Domain\Account\AccountAggregateRoot;
 use App\Http\Requests\AccountRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Models\Account;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 
-/**
- *
- */
 class AccountsController extends Controller
 {
+    /**
+     * Shows the list of accounts by user.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $authUser = auth()->user();
+        $accounts = Account::where('user_id', $authUser->id)
+            ->get();
+
+        return response()->json($accounts);
+    }
+
     /**
      * Create an account.
      *
